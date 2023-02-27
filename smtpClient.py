@@ -16,3 +16,6 @@ try:
     print ("Successfully sent email")
 except smtplib.SMTPException:
     print ("Error: unable to send email")
+
+    if name == 'main':
+        smtp_client(1025, '127.0.0.1')
