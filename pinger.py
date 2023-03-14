@@ -1,11 +1,11 @@
-from socket import *
 import os
-import sys
 import struct
+import sys
 import time
-import select
-import binascii
+from socket import *
+
 import pandas as pd
+import select
 
 ICMP_ECHO_REQUEST = 8
 
@@ -100,9 +100,9 @@ def doOnePing(destAddr, timeout):
 
     myID = os.getpid() & 0xFFFF  # Return the current process i
     sendOnePing(mySocket, destAddr, myID)
-    delay = receiveOnePing(mySocket, myID, timeout, destAddr)
+    delay, ttl = receiveOnePing(mySocket, myID, timeout, destAddr)
     mySocket.close()
-    return delay
+    return delay, ttl
 
 
 def ping(host: object, timeout: object = 1) -> object:
@@ -118,11 +118,10 @@ def ping(host: object, timeout: object = 1) -> object:
     # Send ping requests to a server separated by approximately one second
     # Add something here to collect the delays of each ping in a list so you can calculate vars after your ping
 
-    for i in range(0, 4):  # Four pings will be sent (loop runs for i=0, 1, 2, 3)
-        delay, statistics = doOnePing(dest, timeout)  # what is stored into delay and statistics?
-        row = {'bytes': statistics[0], 'rtt': delay, 'ttl': statistics[1]}
-        response = response.append(row, ignore_index=True) # store your bytes, rtt, and ttle here in your response pandas dataframe. An example is commented out below for vars
-        print(delay)
+    for i in range(0, 4):
+        delay, ttl, statistics = doOnePing(dest, timeout)
+        row = {'bytes': statistics, 'rtt': delay, 'ttl': ttl}
+        response = response.append(row, ignore_index=True)
         time.sleep(1)  # wait one second
 
     packet_lost = 0
