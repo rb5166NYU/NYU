@@ -46,19 +46,15 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         timeReceived = time.time()
         recPacket, addr = mySocket.recvfrom(1024)
 
-        # Fill in start
+        # Fetch the ICMP header from the IP packet
         header = recPacket[20: 28]
         type, code, checksum, packetID, sequence = struct.unpack("!bbHHh", header)
         if type == 0 and packetID == ID:  # type should be 0
-            byte_in_double = struct.calcsize("!d")
-            timeSent = struct.unpack("!d", recPacket[28: 28 + byte_in_double])[0]
+            timeSent = struct.unpack("!d", recPacket[28: 36])[0]
             delay = (timeReceived - timeSent) * 1000
             ttl = ord(struct.unpack("!c", recPacket[8:9])[0].decode())
-            return (delay, ttl, byte_in_double)
+            return (delay, ttl)
 
-        # Fetch the ICMP header from the IP packet
-
-        # Fill in end
         timeLeft = timeLeft - howLongInSelect
         if timeLeft <= 0:
             return "Request timed out."
@@ -99,7 +95,6 @@ def doOnePing(destAddr, timeout):
     mySocket = socket(AF_INET, SOCK_RAW, icmp)
 
     myID = os.getpid() & 0xFFFF  # Return the current process i
-    sendOnePing(mySocket, destAddr, myID)
     delay, ttl = receiveOnePing(mySocket, myID, timeout, destAddr)
     mySocket.close()
     return delay, ttl
@@ -119,8 +114,8 @@ def ping(host: object, timeout: object = 1) -> object:
     # Add something here to collect the delays of each ping in a list so you can calculate vars after your ping
 
     for i in range(0, 4):
-        delay, statistics = doOnePing(dest, timeout)
-        row = {'bytes': statistics, 'rtt': delay, 'ttl': statistics[1]}
+        delay, ttl = doOnePing(dest, timeout)
+        row = {'bytes': 0, 'rtt': delay, 'ttl': ttl} if delay == "Request timed out." else {'bytes': 64, 'rtt': delay, 'ttl': ttl}
         response = response.append(row, ignore_index=True)
         time.sleep(1)  # wait one second
 
@@ -129,9 +124,9 @@ def ping(host: object, timeout: object = 1) -> object:
     # fill in start. UPDATE THE QUESTION MARKS
     for index, row in response.iterrows():
         if row['bytes'] == 0:  # access your response df to determine if you received a packet or not
-            packet_lost =  1
+            packet_lost = 1
         else:
-            packet_recv =  1
+            packet_recv = 1
     # fill in end
 
     # You should have the values of delay for each ping here structured in a pandas dataframe;
@@ -144,5 +139,5 @@ def ping(host: object, timeout: object = 1) -> object:
     return vars
 
 
-#if __name__ == '__main__':
-    ping("google.com")
+
+
