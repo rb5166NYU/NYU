@@ -144,5 +144,5 @@ def ping(host: object, timeout: object = 1) -> object:
     return vars
 
 
-if __name__ == '__main__':
-    ping("google.com")
+#if __name__ == '__main__':
+    #ping("google.com")
