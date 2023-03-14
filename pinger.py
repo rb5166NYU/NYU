@@ -119,8 +119,8 @@ def ping(host: object, timeout: object = 1) -> object:
     # Add something here to collect the delays of each ping in a list so you can calculate vars after your ping
 
     for i in range(0, 4):
-        delay, ttl, statistics = doOnePing(dest, timeout)
-        row = {'bytes': statistics, 'rtt': delay, 'ttl': ttl}
+        delay, statistics = doOnePing(dest, timeout)
+        row = {'bytes': statistics, 'rtt': delay, 'ttl': statistics[1]}
         response = response.append(row, ignore_index=True)
         time.sleep(1)  # wait one second
 
@@ -145,4 +145,4 @@ def ping(host: object, timeout: object = 1) -> object:
 
 
 #if __name__ == '__main__':
-    #ping("google.com")
+    ping("google.com")
