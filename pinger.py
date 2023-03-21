@@ -1,4 +1,3 @@
-
 from socket import *
 import os
 import sys
@@ -109,9 +108,9 @@ def doOnePing(destAddr, timeout):
     # SOCK_RAW is a powerful socket type. For more details:   https://sock-raw.org/papers/sock_raw
     mySocket = socket(AF_INET, SOCK_RAW, icmp)
 
-    myID = os.getpid() & 0xFFFF  # Return the current process i
-    sendOnePing(mySocket, destAddr, myID)
-    delay = receiveOnePing(mySocket, myID, timeout, destAddr)
+    ID = 1234  # Return the current process i
+    sendOnePing(mySocket, destAddr, ID)
+    delay = receiveOnePing(mySocket, ID, timeout, destAddr)
     mySocket.close()
     return delay
 
@@ -123,8 +122,7 @@ def ping(host, timeout=1):
     print("\nPinging " + dest + " using Python:")
     print("")
 
-    response = pd.DataFrame(columns=['bytes', 'rtt',
-                                     'ttl'])  # This creates an empty dataframe with 3 headers with the column specific names declared
+    response = pd.DataFrame(columns=['bytes', 'rtt', 'ttl'])  # This creates an empty dataframe with 3 headers with the column specific names declared
 
     # Send ping requests to a server separated by approximately one second
     # Add something here to collect the delays of each ping in a list so you can calculate vars after your ping
