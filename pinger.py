@@ -1,11 +1,11 @@
-from socket import *
 import os
-import sys
 import struct
+import sys
 import time
-import select
-import binascii
+from socket import *
+
 import pandas as pd
+import select
 
 ICMP_ECHO_REQUEST = 8
 
@@ -41,7 +41,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         whatReady = select.select([mySocket], [], [], timeLeft)
         howLongInSelect = (time.time() - startedSelect)
         if whatReady[0] == []:  # Timeout
-            return "Request timed out."
+            return "Request timed out.", {'bytes': 0, 'rtt': 0, 'ttl': 0}
 
         timeReceived = time.time()
         recPacket, addr = mySocket.recvfrom(1024)
@@ -54,7 +54,9 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         icmp_type, icmp_code, icmp_checksum, icmp_id, icmp_seq = struct.unpack('!BBHHH', icmp_header)
 
         if icmp_type != 0 or icmp_id != ID:
-            return "Received an unexpected ICMP packet.", {'bytes': 0, 'rtt': 0, 'ttl': 0}
+            return f"Received an unexpected ICMP packet (Type: {icmp_type}, Code: {icmp_code}, ID: {icmp_id}, Seq: {icmp_seq}).", {
+                'bytes': 0, 'rtt': 0, 'ttl': 0}
+
         # Fill in end
 
         timeSent = struct.unpack('!d', recPacket[28:])[0]
@@ -74,13 +76,14 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
 
 
 
-def sendOnePing(mySocket, destAddr, ID):
+def sendOnePing(mySocket, destAddr, ID, i):
     # Header is type (8), code (8), checksum (16), id (16), sequence (16)
 
     myChecksum = 0
+
     # Make a dummy header with a 0 checksum
     # struct -- Interpret strings as packed binary data
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, i)
     data = struct.pack("d", time.time())
     # Calculate the checksum on the data and the dummy header.
     myChecksum = checksum(header + data)
@@ -102,14 +105,14 @@ def sendOnePing(mySocket, destAddr, ID):
     # which can be referenced by their position number within the object.
 
 
-def doOnePing(destAddr, timeout):
+def doOnePing(destAddr, timeout, i):
     icmp = getprotobyname("icmp")
 
     # SOCK_RAW is a powerful socket type. For more details:   https://sock-raw.org/papers/sock_raw
     mySocket = socket(AF_INET, SOCK_RAW, icmp)
 
     myID = os.getpid() & 0xFFFF  # Return the current process i
-    sendOnePing(mySocket, destAddr, myID)
+    sendOnePing(mySocket, destAddr, myID, i)
     delay = receiveOnePing(mySocket, myID, timeout, destAddr)
     mySocket.close()
     return delay
@@ -129,7 +132,7 @@ def ping(host, timeout=1):
     # Add something here to collect the delays of each ping in a list so you can calculate vars after your ping
 
     for i in range(0, 4):  # Four pings will be sent (loop runs for i=0, 1, 2, 3)
-        delay, statistics = doOnePing(dest, timeout)  # what is stored into delay and statistics?
+        delay, statistics = doOnePing(dest, timeout, i)  # what is stored into delay and statistics?
         statistics_df = pd.DataFrame([statistics], columns=['bytes', 'rtt', 'ttl'])
         response = pd.concat([response, statistics_df], ignore_index=True)# store your bytes, rtt, and ttle here in your response pandas dataframe. An example is commented out below for vars
         print(delay)
@@ -140,9 +143,9 @@ def ping(host, timeout=1):
     # fill in start. UPDATE THE QUESTION MARKS
     for index, row in response.iterrows():
         if row['rtt'] == 0:  # access your response df to determine if you received a packet or not
-            packet_lost += 1 # ????
+            packet_lost = 1 # ????
         else:
-            packet_recv += 1 # ????
+            packet_recv = 1 # ????
     # fill in end
 
     # You should have the values of delay for each ping here structured in a pandas dataframe;
