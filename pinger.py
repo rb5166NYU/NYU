@@ -7,7 +7,6 @@ import select
 import binascii
 import pandas as pd
 
-
 ICMP_ECHO_REQUEST = 8
 
 
@@ -48,21 +47,31 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         recPacket, addr = mySocket.recvfrom(1024)
 
         # Fill in start
-        header = recPacket[20: 28]
-        type, code, checksum, packetID, sequence = struct.unpack("!bbHHh", header)
-        if type == 0 and packetID == ID:  # type should be 0
-            byte_in_double = struct.calcsize("!d")
-            timeSent = struct.unpack("!d", recPacket[28: 28 + byte_in_double])[0]
-            delay = (timeReceived - timeSent) * 1000
-            ttl = ord(struct.unpack("!c", recPacket[8:9])[0].decode())
-            return (delay, ttl, byte_in_double)
 
         # Fetch the ICMP header from the IP packet
+        ip_header = recPacket[:20]
+        icmp_header = recPacket[20:28]
+        icmp_type, icmp_code, icmp_checksum, icmp_id, icmp_seq = struct.unpack('!BBHHH', icmp_header)
 
+        if icmp_type != 0 or icmp_id != ID:
+            return "Received an unexpected ICMP packet.", {'bytes': 0, 'rtt': 0, 'ttl': 0}
         # Fill in end
+
+        timeSent = struct.unpack('!d', recPacket[28:])[0]
+        rtt = (timeReceived - timeSent) * 1000
+        ttl = struct.unpack('!B', ip_header[8:9])[0]
+
+        stats = {
+            'bytes': len(recPacket),
+            'rtt': rtt,
+            'ttl': ttl
+        }
+
         timeLeft = timeLeft - howLongInSelect
         if timeLeft <= 0:
-            return "Request timed out."
+            return "Request timed out.", {'bytes': 0, 'rtt': 0, 'ttl': 0}
+        return "Reply from {}: bytes={} time={:.2f}ms TTL={}".format(destAddr, len(recPacket), rtt, ttl), stats
+
 
 
 def sendOnePing(mySocket, destAddr, ID):
@@ -101,12 +110,12 @@ def doOnePing(destAddr, timeout):
 
     myID = os.getpid() & 0xFFFF  # Return the current process i
     sendOnePing(mySocket, destAddr, myID)
-    delay, ttl = receiveOnePing(mySocket, myID, timeout, destAddr)
+    delay = receiveOnePing(mySocket, myID, timeout, destAddr)
     mySocket.close()
-    return delay, ttl
+    return delay
 
 
-def ping(host: object, timeout: object = 1) -> object:
+def ping(host, timeout=1):
     # timeout=1 means: If one second goes by without a reply from the server,
     # the client assumes that either the client's ping or the server's pong is lost
     dest = gethostbyname(host)
@@ -119,20 +128,20 @@ def ping(host: object, timeout: object = 1) -> object:
     # Send ping requests to a server separated by approximately one second
     # Add something here to collect the delays of each ping in a list so you can calculate vars after your ping
 
-    for i in range(0, 4):
-        delay, statistics = doOnePing(dest, timeout)
-        row = {'bytes': statistics, 'rtt': delay, 'ttl': statistics[1]}
-        response = response.append(row, ignore_index=True)
+    for i in range(0, 4):  # Four pings will be sent (loop runs for i=0, 1, 2, 3)
+        delay, statistics = doOnePing(dest, timeout)  # what is stored into delay and statistics?
+        response = response.append(statistics, ignore_index=True)# store your bytes, rtt, and ttle here in your response pandas dataframe. An example is commented out below for vars
+        print(delay)
         time.sleep(1)  # wait one second
 
     packet_lost = 0
     packet_recv = 0
     # fill in start. UPDATE THE QUESTION MARKS
     for index, row in response.iterrows():
-        if row['bytes'] == 0:  # access your response df to determine if you received a packet or not
-            packet_lost =  1
+        if row['rtt'] == 0:  # access your response df to determine if you received a packet or not
+            packet_lost += 1 # ????
         else:
-            packet_recv =  1
+            packet_recv += 1 # ????
     # fill in end
 
     # You should have the values of delay for each ping here structured in a pandas dataframe;
@@ -145,5 +154,5 @@ def ping(host: object, timeout: object = 1) -> object:
     return vars
 
 
-#if __name__ == '__main__':
+if __name__ == '__main__':
     ping("google.com")
