@@ -129,14 +129,14 @@ def ping(host, timeout=1):
         print('RTT:', delay)
         timeRTT.append(delay)
         if len(timeRTT) > 0:
-            avgRTT = float(round(sum(timeRTT) / len(timeRTT), 2))
-            minRTT = float(round(min(timeRTT), 2))
-            maxRTT = float(round(max(timeRTT), 2))
+            avgRTT = round(sum(timeRTT) / len(timeRTT), 2)
+            minRTT = min(timeRTT)
+            maxRTT = max(timeRTT)
         else:
             avgRTT = 0
             minRTT = 0
             maxRTT = 0
-        print('maxRTT:', maxRTT, '\tminRTT:', minRTT, '\naverageRTT:', avgRTT)
+        print('max:', maxRTT, '\tmin:', minRTT, '\naverage:', avgRTT)
         time.sleep(1)  # one second
 
     stats_dict = {'minRTT': minRTT, 'avgRTT': avgRTT, 'maxRTT': maxRTT}
