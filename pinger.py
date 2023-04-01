@@ -146,5 +146,5 @@ def ping(host, timeout=1):
 result = ping("google.com")
 print(result)
 
-#if __name__ == '__main__':
-   #ping("google.com")
+if __name__ == '__main__':
+   ping("google.com")
