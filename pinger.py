@@ -68,7 +68,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
        if icmpType != 8 and packetID == ID:
            bytesInDouble = struct.calcsize("d")
        timeSent = struct.unpack("d", recPacket[28:28 + bytesInDouble])[0]
-       return round(timeReceived - timeSent, 4)
+       return timeReceived - timeSent
 
        # Fill in end
        timeLeft = timeLeft - howLongInSelect
@@ -140,10 +140,10 @@ def ping(host, timeout=1):
         time.sleep(1)  # one second
 
     vars = pd.DataFrame(columns=['min', 'avg', 'max', 'stddev'])
-    vars = pd.concat([vars, pd.DataFrame([{'min': str(round(minRTT, 2)),
-                                           'avg': str(round(avgRTT, 2)),
-                                           'max': str(round(maxRTT, 2)),
-                                           'stddev': str(round(pd.Series(timeRTT).std(), 2))}],
+    vars = pd.concat([vars, pd.DataFrame([{'min': str(round(minRTT, 4)),
+                                           'avg': str(round(avgRTT, 4)),
+                                           'max': str(round(maxRTT, 4)),
+                                           'stddev': str(round(pd.Series(timeRTT).std(), 4))}],
                                          columns=['min', 'avg', 'max', 'stddev'])], ignore_index=True)
     print(vars)
     return vars
