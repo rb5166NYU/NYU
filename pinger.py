@@ -123,28 +123,35 @@ def ping(host, timeout=1):
     dest = gethostbyname(host)
     print("Pinging " + dest + " using Python:")
     print("")
-    timeRTT = []
-    for i in range(0,4):
-        delay = doOnePing(dest, timeout)
+
+    response = pd.DataFrame(columns=['bytes', 'rtt', 'ttl'])
+
+    for i in range(0, 4):
+        icmp = getprotobyname("icmp")
+        mySocket = socket(AF_INET, SOCK_RAW, icmp)
+        myID = os.getpid() & 0xFFFF
+        sendOnePing(mySocket, dest, myID)
+        delay = receiveOnePing(mySocket, myID, timeout, dest)
+        mySocket.close()
+
+        # record the response data
+        response = response.append({
+            'bytes': 64,
+            'rtt': delay * 1000 if delay is not None else float('nan'),
+            'ttl': -1  # not currently used
+        }, ignore_index=True)
+
         print(delay)
-        timeRTT.append(delay)
-        if len(timeRTT) > 0:
-            avgRTT = round(sum(timeRTT) / len(timeRTT), 2)
-            minRTT = min(timeRTT)
-            maxRTT = max(timeRTT)
-        else:
-            avgRTT = 0
-            minRTT = 0
-            maxRTT = 0
-        #print('max:', maxRTT, '\tmin:', minRTT, '\naverage:', avgRTT)
-        time.sleep(1)  # one second
+        time.sleep(1)
 
     vars = pd.DataFrame(columns=['min', 'avg', 'max', 'stddev'])
-    vars = pd.concat([vars, pd.DataFrame([{'min': str(round(minRTT, 4)),
-                                           'avg': str(round(avgRTT, 4)),
-                                           'max': str(round(maxRTT, 4)),
-                                           'stddev': str(round(pd.Series(timeRTT).std(), 4))}],
-                                         columns=['min', 'avg', 'max', 'stddev'])], ignore_index=True)
+    vars = vars.append({
+        'min': str(round(response['rtt'].min(), 2)),
+        'avg': str(round(response['rtt'].mean(), 2)),
+        'max': str(round(response['rtt'].max(), 2)),
+        'stddev': str(round(response['rtt'].std(), 2))
+    }, ignore_index=True)
+
     print(vars)
     return vars
 
