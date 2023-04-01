@@ -4,6 +4,10 @@ import sys
 import struct
 import time
 import select
+import binascii
+import pandas as pd
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 timeRTT = []
 packet_min = 0
 packet_avg = 0
@@ -116,26 +120,28 @@ def doOnePing(destAddr, timeout):
 
 
 def ping(host, timeout=1):
-   dest = gethostbyname(host)
-   print("Pinging " + dest + " using Python:")
-   print("")
-   for i in range(0,4):
-       delay = doOnePing(dest, timeout)
-       print('RTT:', delay)
-       timeRTT.append(delay)
-       if len(timeRTT) > 0:
-           avgRTT = float(round(sum(timeRTT) / len(timeRTT), 2))
-           minRTT = float(round(min(timeRTT), 2))
-           maxRTT = float(round(max(timeRTT), 2))
-       else:
-           avgRTT = 0
-           minRTT = 0
-           maxRTT = 0
-       print('maxRTT:', maxRTT, '\tminRTT:', minRTT, '\naverageRTT:', avgRTT)
-       time.sleep(1)  # one second
+    dest = gethostbyname(host)
+    print("Pinging " + dest + " using Python:")
+    print("")
+    timeRTT = []
+    for i in range(0,4):
+        delay = doOnePing(dest, timeout)
+        print('RTT:', delay)
+        timeRTT.append(delay)
+        if len(timeRTT) > 0:
+            avgRTT = float(round(sum(timeRTT) / len(timeRTT), 2))
+            minRTT = float(round(min(timeRTT), 2))
+            maxRTT = float(round(max(timeRTT), 2))
+        else:
+            avgRTT = 0
+            minRTT = 0
+            maxRTT = 0
+        print('maxRTT:', maxRTT, '\tminRTT:', minRTT, '\naverageRTT:', avgRTT)
+        time.sleep(1)  # one second
 
-   vars = [minRTT, avgRTT, maxRTT]
-   return vars
+    stats_dict = {'minRTT': minRTT, 'avgRTT': avgRTT, 'maxRTT': maxRTT}
+    df = pd.DataFrame(stats_dict, index=[host])
+    return df
 
 if __name__ == '__main__':
    ping("google.com")
