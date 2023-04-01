@@ -8,15 +8,8 @@ import binascii
 import pandas as pd
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
-timeRTT = []
-packet_min = 0
-packet_avg = 0
-packet_max = 0
-pstdev_var = 0
-
-
 import binascii
-# Should use stdev
+
 
 ICMP_ECHO_REQUEST = 8
 
