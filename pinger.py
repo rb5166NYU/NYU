@@ -68,7 +68,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
        if icmpType != 8 and packetID == ID:
            bytesInDouble = struct.calcsize("d")
        timeSent = struct.unpack("d", recPacket[28:28 + bytesInDouble])[0]
-       return timeReceived - timeSent
+       return round(timeReceived - timeSent, 4)
 
        # Fill in end
        timeLeft = timeLeft - howLongInSelect
@@ -124,7 +124,7 @@ def ping(host, timeout=1):
     print("Pinging " + dest + " using Python:")
     print("")
     timeRTT = []
-    for i in range(0,10):
+    for i in range(0,4):
         delay = doOnePing(dest, timeout)
         print(delay)
         timeRTT.append(delay)
