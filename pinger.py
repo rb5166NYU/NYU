@@ -124,7 +124,7 @@ def ping(host, timeout=1):
     print("Pinging " + dest + " using Python:")
     print("")
     timeRTT = []
-    for i in range(0,4):
+    for i in range(0,10):
         delay = doOnePing(dest, timeout)
         print(delay)
         timeRTT.append(delay)
