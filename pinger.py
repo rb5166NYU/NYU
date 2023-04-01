@@ -123,12 +123,18 @@ def ping(host, timeout=1):
        delay = doOnePing(dest, timeout)
        print('RTT:', delay)
        timeRTT.append(delay)
-       print('maxRTT:', (max(timeRTT) if len(timeRTT) > 0 else 0),
-             '\tminRTT:', (min(timeRTT) if len(timeRTT) > 0 else 0),
-             '\naverageRTT:', float((sum(timeRTT) / len(timeRTT) if len(timeRTT) > 0 else 0)))
+       if len(timeRTT) > 0:
+           avgRTT = float(round(sum(timeRTT) / len(timeRTT), 2))
+           minRTT = float(round(min(timeRTT), 2))
+           maxRTT = float(round(max(timeRTT), 2))
+       else:
+           avgRTT = 0
+           minRTT = 0
+           maxRTT = 0
+       print('maxRTT:', maxRTT, '\tminRTT:', minRTT, '\naverageRTT:', avgRTT)
        time.sleep(1)  # one second
 
-   vars = [float(round(min(timeRTT), 2)), float(round(sum(timeRTT)/len(timeRTT), 2)), float(round(max(timeRTT), 2))]
+   vars = [minRTT, avgRTT, maxRTT]
    return vars
 
 if __name__ == '__main__':
