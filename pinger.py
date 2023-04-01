@@ -143,8 +143,7 @@ def ping(host, timeout=1):
     df = pd.DataFrame(stats_dict, index=[host])
     return df
 
-result = ping("google.com")
-print(result)
+
 
 if __name__ == '__main__':
    ping("google.com")
