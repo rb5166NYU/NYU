@@ -126,7 +126,7 @@ def ping(host, timeout=1):
     timeRTT = []
     for i in range(0,4):
         delay = doOnePing(dest, timeout)
-        print('RTT:', delay)
+        print(delay)
         timeRTT.append(delay)
         if len(timeRTT) > 0:
             avgRTT = round(sum(timeRTT) / len(timeRTT), 2)
@@ -136,12 +136,18 @@ def ping(host, timeout=1):
             avgRTT = 0
             minRTT = 0
             maxRTT = 0
-        print('max:', maxRTT, '\tmin:', minRTT, '\naverage:', avgRTT)
+        #print('max:', maxRTT, '\tmin:', minRTT, '\naverage:', avgRTT)
         time.sleep(1)  # one second
 
-    stats_dict = {'minRTT': minRTT, 'avgRTT': avgRTT, 'maxRTT': maxRTT}
-    df = pd.DataFrame(stats_dict, index=[host])
-    return df
+    vars = pd.DataFrame(columns=['min', 'avg', 'max', 'stddev'])
+    vars = pd.concat([vars, pd.DataFrame([{'min': str(round(minRTT, 2)),
+                                           'avg': str(round(avgRTT, 2)),
+                                           'max': str(round(maxRTT, 2)),
+                                           'stddev': str(round(pd.Series(timeRTT).std(), 2))}],
+                                         columns=['min', 'avg', 'max', 'stddev'])], ignore_index=True)
+    print(vars)
+    return vars
+
 
 
 
