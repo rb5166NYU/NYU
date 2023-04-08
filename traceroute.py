@@ -62,12 +62,12 @@ def get_route(hostname):
                 whatReady = select.select([mySocket], [], [], timeLeft)
                 howLongInSelect = (time.time() - startedSelect)
                 if whatReady[0] == []:  # Timeout
-                    df = df.append({"Hop Count": ttl, "Try": tries + 1, "IP": "", "Hostname": "", "Response Code": "timeout"}, ignore_index=True)
+                    df = pd.concat([df, pd.DataFrame({"Hop Count": [ttl], "Try": [tries + 1], "IP": [""], "Hostname": [""], "Response Code": ["timeout"]})], ignore_index=True)
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
                 if timeLeft <= 0:
-                    df = df.append({"Hop Count": ttl, "Try": tries + 1, "IP": "", "Hostname": "", "Response Code": "timeout"}, ignore_index=True)
+                    df = pd.concat([df, pd.DataFrame({"Hop Count": [ttl], "Try": [tries + 1], "IP": [""], "Hostname": [""], "Response Code": ["timeout"]})], ignore_index=True)
             except Exception as e:
                 continue
             else:
@@ -79,26 +79,10 @@ def get_route(hostname):
                 except herror:
                     router_hostname = "hostname not returnable"
 
-                if types == 11:
-                    bytes = struct.calcsize("d")
-                    timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    df = df.append({"Hop Count": ttl, "Try": tries + 1, "IP": addr[0], "Hostname": router_hostname,
-                                    "Response Code": types}, ignore_index=True)
-                elif types == 3:
-                    bytes = struct.calcsize("d")
-                    timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    df = df.append({"Hop Count": ttl, "Try": tries + 1, "IP": addr[0], "Hostname": router_hostname,
-                                    "Response Code": "error"}, ignore_index=True)
-                elif types == 0:
-                    bytes = struct.calcsize("d")
-                    timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    df = df.append({"Hop Count": ttl, "Try": tries + 1, "IP": addr[0], "Hostname": router_hostname,
-                                    "Response Code": types}, ignore_index=True)
-                    return df
-                else:
-                    df = df.append({"Hop Count": ttl, "Try": tries + 1, "IP": addr[0], "Hostname": router_hostname,
-                                    "Response Code": "unknown"}, ignore_index=True)
-                break
+                df = pd.concat([df, pd.DataFrame({"Hop Count": [ttl], "Try": [tries + 1], "IP": [addr[0]], "Hostname": [router_hostname], "Response Code": [types]})], ignore_index=True)
+
+                if types in (0, 3, 11):
+                    break
     return df
 
 if __name__ == '__main__':
