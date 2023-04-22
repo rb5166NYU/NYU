@@ -81,7 +81,7 @@ def get_route(hostname):
 
                 df = pd.concat([df, pd.DataFrame({"Hop Count": [ttl], "Try": [tries + 1], "IP": [addr[0]], "Hostname": [router_hostname], "Response Code": [types]})], ignore_index=True)
 
-                if addr[0] == destAddr:
+                if addr[0] == destAddr or types in [0, 3, 11]:
                     break
 
     try:
