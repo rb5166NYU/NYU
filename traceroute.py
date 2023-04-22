@@ -93,7 +93,10 @@ def get_route(hostname):
     except herror:
         dest_canonical_name = "hostname not returnable"
 
-    df = pd.concat([df, pd.DataFrame({"Hop Count": [ttl + 1], "Try": [1], "IP": [destAddr], "Hostname": [hostname], "Response Code": [0]})], ignore_index=True)
+    df.at[len(df) - 1, 'IP'] = destAddr
+    df.at[len(df) - 1, 'Hostname'] = hostname
+    df.at[len(df) - 1, 'Response Code'] = 0
+
     return df
 
 if __name__ == '__main__':
