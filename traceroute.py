@@ -92,4 +92,4 @@ def get_route(hostname):
     return df
 
 if __name__ == '__main__':
-    print(get_route("google.com"))
+    print(get_route("google.co.il"))
