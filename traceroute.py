@@ -8,7 +8,7 @@ import binascii
 import pandas as pd
 
 ICMP_ECHO_REQUEST = 8
-MAX_HOPS = 10
+MAX_HOPS = 15
 TIMEOUT = 2.0
 TRIES = 1
 
