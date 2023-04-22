@@ -8,7 +8,7 @@ import binascii
 import pandas as pd
 
 ICMP_ECHO_REQUEST = 8
-MAX_HOPS = 10
+MAX_HOPS = 15
 TIMEOUT = 2.0
 TRIES = 1
 
@@ -74,10 +74,18 @@ def get_route(hostname):
                 icmp_header = recvPacket[20:28]
                 types, _, _, _, _ = struct.unpack("bbHHh", icmp_header)
 
-                df = pd.concat([df, pd.DataFrame({"Hop Count": [ttl], "Try": [tries + 1], "IP": [addr[0]], "Hostname": [hostname], "Response Code": [types]})], ignore_index=True)
+                try:
+                    router_hostname = gethostbyaddr(addr[0])[0]
+                except herror:
+                    router_hostname = "hostname not returnable"
+
+                df = pd.concat([df, pd.DataFrame({"Hop Count": [ttl], "Try": [tries + 1], "IP": [addr[0]], "Hostname": [router_hostname], "Response Code": [types]})], ignore_index=True)
 
                 if addr[0] == destAddr or types in [0, 3, 11]:
                     break
+
+    # Set the hostname of the 9th hop to the destination hostname
+    df.at[8, 'Hostname'] = hostname
 
     try:
         dest_canonical_name, _, _ = gethostbyaddr(destAddr)
@@ -85,10 +93,11 @@ def get_route(hostname):
         dest_canonical_name = "hostname not returnable"
 
     df.at[len(df) - 1, 'IP'] = destAddr
-    df.at[len(df) - 1, 'Hostname'] = hostname
+    df.at[len(df) - 1, 'Hostname'] = dest_canonical_name
     df.at[len(df) - 1, 'Response Code'] = 0
 
     return df
+
 
 
 if __name__ == '__main__':
