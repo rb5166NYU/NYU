@@ -87,9 +87,9 @@ def get_route(hostname):
                     break
                 elif types == 11:
                     break
-
+    dest_canonical_name, _, _ = gethostbyaddr(destAddr)
     df = pd.concat([df, pd.DataFrame({"Hop Count": [ttl + 1], "Try": [1], "IP": [destAddr], "Hostname": [hostname], "Response Code": [0]})], ignore_index=True)
     return df
 
 if __name__ == '__main__':
-    print(get_route("google.co.il"))
+    print(get_route("google.com"))
