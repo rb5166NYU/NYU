@@ -74,7 +74,6 @@ def get_route(hostname):
                 icmp_header = recvPacket[20:28]
                 types, _, _, _, _ = struct.unpack("bbHHh", icmp_header)
 
-
                 try:
                     router_hostname = gethostbyaddr(addr[0])[0]
                 except herror:
@@ -82,8 +81,14 @@ def get_route(hostname):
 
                 df = pd.concat([df, pd.DataFrame({"Hop Count": [ttl], "Try": [tries + 1], "IP": [addr[0]], "Hostname": [router_hostname], "Response Code": [types]})], ignore_index=True)
 
-                if types in (0, 3, 11):
+                if types == 0:
                     break
+                elif types == 3:
+                    break
+                elif types == 11:
+                    break
+
+    df = pd.concat([df, pd.DataFrame({"Hop Count": [ttl + 1], "Try": [1], "IP": [destAddr], "Hostname": [hostname], "Response Code": [0]})], ignore_index=True)
     return df
 
 if __name__ == '__main__':
