@@ -72,7 +72,8 @@ def get_route(hostname):
                 continue
             else:
                 icmp_header = recvPacket[20:28]
-                _, _, types, _, _ = struct.unpack("bbHHh", icmp_header)
+                types, _, _, _, _ = struct.unpack("bbHHh", icmp_header)
+
 
                 try:
                     router_hostname = gethostbyaddr(addr[0])[0]
@@ -86,4 +87,4 @@ def get_route(hostname):
     return df
 
 if __name__ == '__main__':
-    print(get_route("google.co.il"))
+    print(get_route("google.com"))
