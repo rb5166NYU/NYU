@@ -7,6 +7,7 @@ int main() {
   printf("Hello world\n"); /* Hello World */
   /* the %d is telling us there is an integer (number) and to convert that into a string */
   printf("Answer %d\n", 42); /* Answer 42 */
+  /* The %s is saying there an array of character (string)  */
   printf("Name %s\n", "Ryan"); /* Name Ryan */
   /* the %.1f instructs the function to print a floating-point number with one digit after the decimal point.
   More specifically for %.1f will dictate how many decimal spots you have. If I change it to 5 there will then be 5 decimal spots*/
