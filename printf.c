@@ -3,7 +3,7 @@
 
 int main() {
 /* comments next to the line will show the intented output */
-  
+  /* the \n is what says to print a new line, if removed they will all be in the same line */
   printf("Hello world\n"); /* Hello World */
   printf("Answer %d\n", 42); /* Answer 42 */
   printf("Name %s\n", "Ryan"); /* Name Ryan */
