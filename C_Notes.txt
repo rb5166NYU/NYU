@@ -2,3 +2,5 @@ Notes for C programing:
 
 You need to add { } if going over 1 statment (what is a statment)
 to make a comment /* comment */
+
+float = numbers with a fractional part (decials?)
