@@ -22,9 +22,9 @@ Meaning either divisable by 4 OR 400 but NOT 100.
 // The %d tells the printf to expect an integer value
 // The \n moves the cursor to the next line after printing the text
 // "number" is the variable that will be assigned to the %d
-        printf("%d was a leap year\n", number);
+        printf("%d was a leap year", number);
     } else {
-        printf("%d was not a leap year\n", number);
+        printf("%d was not a leap year", number);
     }
        
 
