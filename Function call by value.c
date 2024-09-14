@@ -1,12 +1,13 @@
-
-
 #include <stdio.h>
 int main() {
+    /*Creating the variables*/
     int mymult();
     int retval;
 
-/* Assigning 6 and 7 to mymult */
+/* Assigning 6 and 7 to mymult
+While retval is assigned the results of mymult*/
     retval = mymult(6, 7);
+/* the printf looks for an integer %d and that references "retval" for what inteager to place there*/
     printf("Answer: %d\n", retval);
 
 }
