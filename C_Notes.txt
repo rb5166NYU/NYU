@@ -4,6 +4,7 @@ Notes for C programing:
 - Create a program that will scan headers and footers for classification markings and print locations of those files with their names
 - Scan for files that are or contain images but REALLY fast and will pick up hidden ones
 - if files is outside of specified directory preform a deadlock or something like that
+- Set these up to be interactive or real time
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### Guide ###
 Sections are separated by ### ###
