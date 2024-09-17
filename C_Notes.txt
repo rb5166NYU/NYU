@@ -1,7 +1,12 @@
 Notes for C programing:
 
+### Project Ideas ###
+- Create a program that will scan headers and footers for classification markings
+.....  .....  .....  .....  ..... .....  .....  .....  .....  .....
+### Guide ###
 Sections are separated by ### ###
 
+.....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### Notes ### 
 
 You need to add { } if going over 1 statment (what is a statment)
@@ -9,10 +14,11 @@ to make a comment /* comment */
 
 float = numbers with a fractional part (decials?)
 
+.....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### Processes and Threads ###
 - a process is an application in memory
 
-
+.....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### What Each Program in this branch will help with ###
 
 isleapyear: 
@@ -37,6 +43,31 @@ Hello:
 Line Input:
 - shows how to create an array of characters
 - creating limits for that array
+
+Number Guess:
+- Shows how to set up a loop based on user input
+- will continually run a loop until the number we are looking for is entered
+- Will show "EOF" "&" "while" "if" "break" "else if" "%d"
+
+Number Input: 
+- Asking for inputs and assigning values based on those inputs
+
+Pick a Number:
+- Will ask for a number and then display the number entered
+
+Read A File:
+- Creates an array and will read a file up to the limit of that array
+- Opens a file within its working directory
+- "char line[]" "FILE *hand" "fopen" "fgets" "line" "hand" "NULL"
+
+
+
+
+
+
+
+
+
 
 
 
