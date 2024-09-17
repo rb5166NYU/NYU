@@ -10,7 +10,7 @@ to make a comment /* comment */
 float = numbers with a fractional part (decials?)
 
 ### Processes and Threads ###
-
+- a process is an application in memory
 
 
 ### What Each Program in this branch will help with ###
