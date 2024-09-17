@@ -4,3 +4,15 @@ You need to add { } if going over 1 statment (what is a statment)
 to make a comment /* comment */
 
 float = numbers with a fractional part (decials?)
+
+
+
+
+
+### What Each Program in this branch will help with ###
+
+isleapyear: 
+- will show how to incorperate adding command line arguments into the program. 
+- This will also show how to take that commnad line string and convert it into a integer
+- Useage of atoi, argc, argv[], char and if/else statments
+- usage of boolan && ||
