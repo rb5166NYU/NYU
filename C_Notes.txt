@@ -10,6 +10,8 @@ Website to complie code online: https://www.onlinegdb.com/
 
 Education: https://www.cc4e.com/
 - code is 42
+
+In my program descriptions anything with ( ) is a personal side comment, while anyhting within " " is a part of the C programing code
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### Notes ### 
 
@@ -21,6 +23,10 @@ float = numbers with a fractional part (decials?)
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### Processes and Threads ###
 - a process is an application in memory
+
+
+
+
 
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### What Each Program in this branch will help with ###
@@ -39,6 +45,7 @@ Counted Loop:
 Function call by value:
 - Shows hwo to assign numbers to values and call those functions later in the code
 - will retrevie values
+- "return"
 
 Hello:
 - The classic hello world
@@ -58,6 +65,7 @@ Number Input:
 
 Pick a Number:
 - Will ask for a number and then display the number entered
+- "return"
 
 Read A File:
 - Creates an array and will read a file up to the limit of that array
