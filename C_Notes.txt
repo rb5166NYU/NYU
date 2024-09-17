@@ -7,6 +7,9 @@ Notes for C programing:
 Sections are separated by ### ###
 
 Website to complie code online: https://www.onlinegdb.com/
+
+Education: https://www.cc4e.com/
+- code is 42
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### Notes ### 
 
