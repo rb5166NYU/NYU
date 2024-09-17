@@ -1,5 +1,8 @@
 #include <stdio.h>
-/* This header stdlib will allow the conversion from ASCII to integer... makes string to and int */
+/* 
+- This header stdlib will allow the conversion from ASCII to integer... makes string to and int 
+- If you want to use command line to enter numbers to feed into program, you need this header. It is the means for converting the command line numbers (entered as a string) into integers.
+*/
 #include <stdlib.h>  // For atoi function
 
 // Main function with command-line arguments
