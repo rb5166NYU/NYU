@@ -20,3 +20,26 @@ isleapyear:
 - This will also show how to take that commnad line string and convert it into a integer
 - Useage of atoi, argc, argv[], char and if/else statments
 - usage of boolan && ||
+
+Counted Loop:
+- Shows how a loop within C works
+- how to increase a number each time a program is ran within a loop
+- shows how "for" is used and "++"
+
+Function call by value:
+- Shows hwo to assign numbers to values and call those functions later in the code
+- will retrevie values
+
+Hello:
+- The classic hello world
+- shows how to have a program print a string of text when ran
+
+Line Input:
+- shows how to create an array of characters
+- creating limits for that array
+
+
+
+
+
+
