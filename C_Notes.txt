@@ -1,7 +1,8 @@
 Notes for C programing:
 
 ### Project Ideas ###
-- Create a program that will scan headers and footers for classification markings
+- Create a program that will scan headers and footers for classification markings and print locations of those files with their names
+- Scan for files that are or contain images but REALLY fast and will pick up hidden ones
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### Guide ###
 Sections are separated by ### ###
@@ -22,11 +23,10 @@ float = numbers with a fractional part (decials?)
 
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### Processes and Threads ###
-- a process is an application in memory
-
-
-
-
+- a process is an application in memory (container for application)
+- process states: running, ready, and blocked
+- you can have multiple threads per process
+- pthread.h header for threads
 
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### What Each Program in this branch will help with ###
