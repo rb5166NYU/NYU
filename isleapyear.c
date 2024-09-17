@@ -33,6 +33,13 @@ int main(int argc, char *argv[]) {
     int year = atoi(argv[1]);
 
     // Check if the year is a leap year
+/*
+- first checks if the year is divisable by 4
+- Then will check if the year is NOT divisable by 100 BUT is divisable by 400
+- The && (and) ensure it is divisable by 4 AND then will check to make sure it is not divisable by 100
+- THEN it will check to make sure it can be divisable by 400 with the || (OR). 
+- Meaning either divisable by 4 OR 400 but NOT 100.
+*/
     if ((year % 4 == 0) && (year % 100 != 0 || year % 400 == 0)) {
         // Print if the year is a leap year
         printf("%d was a leap year\n", year);
