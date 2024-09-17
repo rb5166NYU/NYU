@@ -86,6 +86,11 @@ String Inpuut:
 - display the string the user entered
 - "%100s" <- looks a string (%s) up to 100 characters "scanf" "printf"
 
+CreateThreads:
+- Shows how to use the POSIX thread library (The <pthread.h> header)
+- "void" "free" "#define" "perror" "malloc" "exit" "pthread_create" "pthread_join" "pthread_t" "pthread_exit"
+- Creates threads, gets responses from them, prints the creation and responses from the threads created
+
 
 
 
