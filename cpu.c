@@ -1,3 +1,4 @@
+
 #include "oslabs.h"
 #include <stdio.h>
 
@@ -97,9 +98,9 @@ struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *q
         {
             ready_queue[i] = ready_queue[i + 1];
         }
-
+        
         // Decrease the queue count
-        (*queue_cnt)--;  // Decrement queue count
+        *queue_cnt = *queue_cnt - 1;
 
         // Set execution times
         highest_priority.execution_starttime = timestamp;
