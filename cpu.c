@@ -154,7 +154,34 @@ struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *qu
 
 
 struct PCB handle_process_completion_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp)
-{}
+
+{
+  if (*queue_cnt > 0)
+    {
+      int srt = 0;
+      for (int i = 1; i < *queue_cnt; i++)
+        {
+          if (ready_queue[srt].remaining_bursttime > ready_queue[i].remaining_bursttime)
+            {
+              srt = i;
+            }
+        }
+      //we know the shortest reamining time pcb location, return it
+      struct PCB highest_priority = ready_queue[srt];
+      //shift all other elements up
+      for (int i = srt; i < *queue_cnt; i ++)
+        {
+          ready_queue[i] = ready_queue[i+1];
+        }
+      *queue_cnt = *queue_cnt - 1;
+      highest_priority.execution_starttime = timestamp;
+      highest_priority.execution_endtime = timestamp + highest_priority.remaining_bursttime;
+      return highest_priority;
+    }
+  return NULLPCB;
+}
+
+
 struct PCB handle_process_arrival_rr(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int timestamp, int time_quantum)
 {}
 struct PCB handle_process_completion_rr(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp, int time_quantum)
