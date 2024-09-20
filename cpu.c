@@ -116,40 +116,42 @@ struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *q
 PART 3
 
 *******************************************************/
-struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int time_stamp) {
-    if (test_null_pcb(current_process)) { // No currently-running process
-        new_process.execution_starttime = time_stamp; // Set start time
-        new_process.execution_endtime = time_stamp + new_process.total_bursttime; // Set end time
-        new_process.remaining_bursttime = new_process.total_bursttime; // Initialize remaining time
-        return new_process; // Return new process
+struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int time_stamp)
+{
+  //if no current process
+  if (test_null_pcb(current_process, NULLPCB))
+    {
+      new_process.execution_starttime = time_stamp;
+      new_process.execution_endtime = time_stamp + new_process.total_bursttime;
+      new_process.remaining_bursttime = new_process.total_bursttime;
+      return new_process;
     }
 
-    // New process has a shorter remaining burst time
-    if (new_process.remaining_bursttime < current_process.remaining_bursttime) {
-        // Preempt current process
-        current_process.execution_endtime = 0; // Mark as not finished
-        current_process.remaining_bursttime -= (time_stamp - current_process.execution_starttime); // Update remaining time
-        ready_queue[*queue_cnt] = current_process; // Add current process to ready queue
-        (*queue_cnt)++; // Increment queue count
 
-        // Initialize new process
-        new_process.execution_starttime = time_stamp; 
-        new_process.execution_endtime = time_stamp + new_process.total_bursttime;
-        new_process.remaining_bursttime = new_process.total_bursttime;
+  //if current process has shortest time
+  else if (current_process.remaining_bursttime < new_process.remaining_bursttime)
+    {
+      new_process.execution_starttime = 0;
+      new_process.execution_endtime = 0;
+      new_process.remaining_bursttime = new_process.total_bursttime;
+      ready_queue[*queue_cnt] = new_process;
+      *queue_cnt = *queue_cnt + 1;
+      return current_process;
+    }
 
-        return new_process; // Return new process
-    } else {
-        // If the new process does not preempt the current process
-        new_process.execution_starttime = 0; // Set start time to 0
-        new_process.execution_endtime = 0; // Set end time to 0
-        new_process.remaining_bursttime = new_process.total_bursttime; // Reset remaining time
-        ready_queue[*queue_cnt] = new_process; // Add new process to ready queue
-        (*queue_cnt)++; // Increment queue count
-        return current_process; // Return current process
+  //if new process has shortest time
+  else
+    {
+      new_process.execution_starttime = time_stamp;
+      new_process.execution_endtime = time_stamp + new_process.total_bursttime;
+      new_process.remaining_bursttime = new_process.total_bursttime;
+      current_process.execution_starttime = 0;
+      current_process.execution_endtime = 0;
+      ready_queue[*queue_cnt] = current_process;
+      *queue_cnt = *queue_cnt + 1;
+      return new_process;
     }
 }
-
-
 
 
 
