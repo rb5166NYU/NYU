@@ -220,5 +220,36 @@ struct PCB handle_process_arrival_rr(struct PCB ready_queue[QUEUEMAX], int *queu
 /*****************************************************************
 PART 6
 *****************************************************************/
-struct PCB handle_process_completion_rr(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp, int time_quantum)
-{}
+struct PCB handle_process_completion_rr(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int time_stamp, int time_quantum)
+{
+  if (*queue_cnt > 0)
+    {
+      int rr = 0;
+      for (int i = 1; i < *queue_cnt; i++)
+        {
+          if (ready_queue[rr].arrival_timestamp > ready_queue[i].arrival_timestamp)
+            {
+              rr = i;
+            }
+        }
+      //we know the shortest reamining time pcb location, return it
+      struct PCB highest_priority = ready_queue[rr];
+      //shift all other elements up
+      for (int i = rr; i < *queue_cnt; i ++)
+        {
+          ready_queue[i] = ready_queue[i+1];
+        }
+      *queue_cnt = *queue_cnt - 1;
+      highest_priority.execution_starttime = time_stamp;
+      if (highest_priority.total_bursttime > time_quantum)
+        {
+          highest_priority.execution_endtime = time_stamp + time_quantum;
+        }
+      else
+        {
+          highest_priority.execution_endtime = time_stamp + highest_priority.total_bursttime;
+        }
+      return highest_priority;
+    }
+  return NULLPCB;
+}
