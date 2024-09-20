@@ -91,8 +91,11 @@ struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *q
 	if (*queue_cnt == 0) {
 		struct PCB NULLPCB = {0}; // Return a null PCB
 		return NULLPCB;
+		
 	}
 }
+
+
 
 /*
 struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int time_stamp)
