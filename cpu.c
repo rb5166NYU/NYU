@@ -119,7 +119,7 @@ PART 3
 struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int time_stamp)
 {
   //if no current process
-  if (test_null_pcb(current_process, NULLPCB))
+  if (test_null_pcb(current_process))
     {
       new_process.execution_starttime = time_stamp;
       new_process.execution_endtime = time_stamp + new_process.total_bursttime;
