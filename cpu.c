@@ -1,4 +1,3 @@
-
 #include "oslabs.h"
 #include <stdio.h>
 
@@ -98,9 +97,9 @@ struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *q
         {
             ready_queue[i] = ready_queue[i + 1];
         }
-        
+
         // Decrease the queue count
-        *queue_cnt = *queue_cnt - 1;
+        (*queue_cnt)--;  // Decrement queue count
 
         // Set execution times
         highest_priority.execution_starttime = timestamp;
@@ -112,11 +111,51 @@ struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *q
     return NULLPCB; // Ensure NULLPCB is defined correctly
 }
 
+/***************************************************
+
+PART 3
+
+*******************************************************/
+
+struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int time_stamp) {
+
+    if (test_null_pcb(current_process)) { // Checks if current process is null
+        new_process.execution_starttime = time_stamp; // setting the new process start time to the current time stamp
+        new_process.execution_endtime = time_stamp + new_process.total_bursttime; // setting the endtime to equal the current time plus the total run time 
+        new_process.remaining_bursttime = new_process.total_bursttime; // Setting the  new process remaining run time to the total run time 
+        return new_process; // indicates the new process is now the active process
+    }
+
+    
+    else if (current_process.remaining_bursttime < new_process.remaining_bursttime) { // If the current process remaining run time is less than the new process remaining run time
+        new_process.execution_starttime = 0; // sets start time to 0
+        new_process.execution_endtime = 0;// sets endtime to 0
+        new_process.remaining_bursttime = new_process.total_bursttime; // sets remaing run time to total run time.. Meaning time is reset
+        ready_queue[*queue_cnt] = new_process; // sets the queue count pointer to the new process.. Adding it to the ready queue to the position inidcated by the pointer
+        *queue_cnt = *queue_cnt + 1; // adds one to the queue count. ensuring the next process is added to the correct index
+        return current_process;
+    }
+
+    // If new process has the shortest remaining time
+    else {
+        new_process.execution_starttime = time_stamp; 
+        new_process.execution_endtime = time_stamp + new_process.total_bursttime;
+        new_process.remaining_bursttime = new_process.total_bursttime;
+        current_process.execution_starttime = 0;
+        current_process.execution_endtime = 0;
+        ready_queue[*queue_cnt] = current_process; // adding current process to ready queue
+        *queue_cnt = *queue_cnt + 1;
+        return new_process;
+    }
+}
 
 
 
-struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int time_stamp)
-{}
+
+
+
+
+
 struct PCB handle_process_completion_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp)
 {}
 struct PCB handle_process_arrival_rr(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int timestamp, int time_quantum)
