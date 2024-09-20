@@ -24,6 +24,11 @@ to make a comment /* comment */
 
 float = numbers with a fractional part (decials?)
 
+bursttime = how much time is takes to run the process
+example of bursttime being used:
+inpcb.total_bursttime
+inpcb.remaining_bursttime
+
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### Processes and Threads ###
 - a process is an application in memory (container for application)
