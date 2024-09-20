@@ -1,5 +1,7 @@
 #include "oslabs.h"
 #include <stdio.h>
+
+struct PCB NULLPCB = {0, 0, 0, 0, 0, 0, 0};
 /*
 - Below this will check if the PCB (process control block) is set to NULL (zero)
 - "int test_null_pcb" delcares this is an integer and names the function "test_null_pcb"
@@ -72,32 +74,46 @@ struct PCB handle_process_arrival_pp(struct PCB ready_queue[QUEUEMAX], int *queu
 
 **************************************/
 
-int ready_pcb(struct PCB inpcb) {
-	if (inpcb.process_id == 0 &&
-	        inpcb.arrival_timestamp == 0 &&
-	        inpcb.total_bursttime == 0 &&
-	        inpcb.execution_starttime == 0 &&
-	        inpcb.execution_endtime == 0 &&
-	        inpcb.remaining_bursttime == 0 &&
-	        inpcb.process_priority == 0) {
-		return 1; // Is null
-	} else {
-		return 0; // Is not null
-	}
+struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp) 
+{
+    if (*queue_cnt > 0) 
+    {
+        int top_priority = 0;
+
+        // Find the highest priority process
+        for (int i = 1; i < *queue_cnt; i++) 
+        {
+            if (ready_queue[top_priority].process_priority > ready_queue[i].process_priority) 
+            {
+                top_priority = i;
+            }
+        }
+
+        // Retrieve the highest priority PCB
+        struct PCB highest_priority = ready_queue[top_priority];
+
+        // Shift the queue to remove the completed process
+        for (int i = top_priority; i < *queue_cnt - 1; i++) 
+        {
+            ready_queue[i] = ready_queue[i + 1];
+        }
+        
+        // Decrease the queue count
+        *queue_cnt = *queue_cnt - 1;
+
+        // Set execution times
+        highest_priority.execution_starttime = timestamp;
+        highest_priority.execution_endtime = timestamp + highest_priority.remaining_bursttime;
+
+        return highest_priority;
+    }
+
+    return NULLPCB; // Ensure NULLPCB is defined correctly
 }
 
-struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp) {
-	// Check if the queue is empty
-	if (*queue_cnt == 0) {
-		struct PCB NULLPCB = {0}; // Return a null PCB
-		return NULLPCB;
-		
-	}
-}
 
 
 
-/*
 struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int time_stamp)
 {}
 struct PCB handle_process_completion_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp)
@@ -106,4 +122,3 @@ struct PCB handle_process_arrival_rr(struct PCB ready_queue[QUEUEMAX], int *queu
 {}
 struct PCB handle_process_completion_rr(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp, int time_quantum)
 {}
-*/
