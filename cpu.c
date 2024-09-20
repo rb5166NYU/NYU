@@ -187,36 +187,22 @@ struct PCB handle_process_completion_srtp(struct PCB ready_queue[QUEUEMAX], int 
 PART 5
 *****************************************************************/
 
-struct PCB handle_process_arrival_rr(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int timestamp, int time_quantum) {
-    // If there is no current process
-    if (test_null_pcb(current_process)) {
-        // Initialize the new process as the current process
-        new_process.execution_starttime = timestamp;
-
-        // Set execution end time and remaining burst time
-        if (new_process.total_bursttime > time_quantum) {
-            new_process.execution_endtime = timestamp + time_quantum;
-            new_process.remaining_bursttime = new_process.total_bursttime - time_quantum;
-        } else {
-            new_process.execution_endtime = timestamp + new_process.total_bursttime;
-            new_process.remaining_bursttime = 0; // Process will complete
+struct PCB handle_process_arrival_rr(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int timestamp, int time_quantum)
+{
+  if (test_null_pcb(current_process))
+    {
+      new_process.execution_starttime = timestamp;
+      if (new_process.total_bursttime > time_quantum)
+        {
+          new_process.execution_endtime = timestamp + time_quantum;
         }
-
-        // Return the new process as the current process
-        return new_process;
-    } else {
-        // If there is a current process, add the new process to the ready queue
-        if (*queue_cnt < QUEUEMAX) {
-            ready_queue[*queue_cnt] = new_process;
-            (*queue_cnt)++; // Increase the count of processes in the queue
-        } else {
-            // Handle the case when the ready queue is full, if needed
-            // For example, you might want to discard the new process or flag an error
+      else
+        {
+          new_process.execution_endtime = timestamp + new_process.total_bursttime;
         }
+      new_process.remaining_bursttime = new_process.total_bursttime;
+      return new_process;
     }
-
-    // Return the current process as nothing changes to it
-    return current_process;
 }
 /*****************************************************************
 PART 6
