@@ -117,37 +117,52 @@ PART 3
 
 *******************************************************/
 
-struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int time_stamp) {
-
-    if (test_null_pcb(current_process)) { // Checks if current process is null
-        new_process.execution_starttime = time_stamp; // setting the new process start time to the current time stamp
-        new_process.execution_endtime = time_stamp + new_process.total_bursttime; // setting the endtime to equal the current time plus the total run time 
-        new_process.remaining_bursttime = new_process.total_bursttime; // Setting the  new process remaining run time to the total run time 
-        return new_process; // indicates the new process is now the active process
-    }
-
-    
-    else if (current_process.remaining_bursttime < new_process.remaining_bursttime) { // If the current process remaining run time is less than the new process remaining run time
-        new_process.execution_starttime = 0; // sets start time to 0
-        new_process.execution_endtime = 0;// sets endtime to 0
-        new_process.remaining_bursttime = new_process.total_bursttime; // sets remaing run time to total run time.. Meaning time is reset
-        ready_queue[*queue_cnt] = new_process; // sets the queue count pointer to the new process.. Adding it to the ready queue to the position inidcated by the pointer
-        *queue_cnt = *queue_cnt + 1; // adds one to the queue count. ensuring the next process is added to the correct index
-        return current_process;
-    }
-
-    // If new process has the shortest remaining time
-    else {
+struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], 
+                                         int *queue_cnt, 
+                                         struct PCB current_process, 
+                                         struct PCB new_process, 
+                                         int time_stamp) {
+    // Check if there is no currently running process
+    if (test_null_pcb(current_process)) {
+        // Set the new process as the active one
         new_process.execution_starttime = time_stamp; 
-        new_process.execution_endtime = time_stamp + new_process.total_bursttime;
-        new_process.remaining_bursttime = new_process.total_bursttime;
+        new_process.execution_endtime = time_stamp + new_process.total_bursttime; 
+        new_process.remaining_bursttime = new_process.total_bursttime; 
+        return new_process; // New process is now active
+    }
+
+    // If the new process has a shorter remaining burst time
+    if (new_process.remaining_bursttime < current_process.remaining_bursttime) {
+        // Preempt the current process
+        // Add current process to the ready queue
+        ready_queue[*queue_cnt] = current_process;
+        (*queue_cnt)++; // Increment queue count
+
+        // Update the current process state
         current_process.execution_starttime = 0;
         current_process.execution_endtime = 0;
-        ready_queue[*queue_cnt] = current_process; // adding current process to ready queue
-        *queue_cnt = *queue_cnt + 1;
-        return new_process;
+        current_process.remaining_bursttime -= (time_stamp - current_process.execution_starttime);
+
+        // Start the new process
+        new_process.execution_starttime = time_stamp; 
+        new_process.execution_endtime = time_stamp + new_process.total_bursttime; 
+        new_process.remaining_bursttime = new_process.total_bursttime; 
+
+        return new_process; // Return the new process as the active one
     }
+
+    // Current process continues to run
+    // Add the new process to the ready queue
+    new_process.execution_starttime = 0; 
+    new_process.execution_endtime = 0; 
+    new_process.remaining_bursttime = new_process.total_bursttime; 
+
+    ready_queue[*queue_cnt] = new_process; // Add new process to the queue
+    (*queue_cnt)++; // Increment queue count
+
+    return current_process; // Current process continues
 }
+
 
 /*****************************************************************
 PART 4
