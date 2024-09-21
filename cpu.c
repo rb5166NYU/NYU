@@ -173,10 +173,15 @@ PART 4
 struct PCB handle_process_completion_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp)
 
 {
-  if (*queue_cnt > 0)
+  if (*queue_cnt > 0) /* The function first checks if there are any processes in the ready_queue. If *queue_cnt is 0, it implies the queue is empty, and the function will not proceed further.*/
     {
-      int srt = 0;
-      for (int i = 1; i < *queue_cnt; i++)
+      int srt = 0; /* An integer srt is initialized to 0, which will hold the index of the process with the shortest remaining burst time. */
+      /*
+- This loop starts from the second process (index 1) and iterates through the remaining processes in the queue.
+- For each process at index i, it compares its remaining_bursttime with that of the process at the index stored in srt.
+- If the process at index i has a shorter remaining burst time, the srt index is updated to i.
+      */
+	for (int i = 1; i < *queue_cnt; i++)
         {
           if (ready_queue[srt].remaining_bursttime > ready_queue[i].remaining_bursttime)
             {
