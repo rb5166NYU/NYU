@@ -74,16 +74,22 @@ struct PCB handle_process_arrival_pp(struct PCB ready_queue[QUEUEMAX], int *queu
 
 **************************************/
 
+/*
+- This function handles the completion of a process in a priority-based scheduling system. It selects the highest priority process from a ready queue and updates its execution times.
+- struct PCB ready_queue[QUEUEMAX] is an array of PCB representing processes in the ready queue. 
+- defines the pointer to the queue_cnt as an integer
+- defines timestamp as an integer
+*/
 struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp) 
 {
     if (*queue_cnt > 0) 
     {
-        int top_priority = 0;
+        int top_priority = 0; // creates top_priority as an integer and assigns it the value 0
 
         // Find the highest priority process
-        for (int i = 1; i < *queue_cnt; i++) 
+        for (int i = 1; i < *queue_cnt; i++) // This will run each time (for), assigns i to one and if i is less than the process pointed to by the queue count. Then increase i by one
         {
-            if (ready_queue[top_priority].process_priority > ready_queue[i].process_priority) 
+            if (ready_queue[top_priority].process_priority > ready_queue[i].process_priority) // if the process assigned to top_priority is in the ready_queue array. Is greater than the process assigned to i in the ready queue.
             {
                 top_priority = i;
             }
