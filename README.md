@@ -6,6 +6,8 @@ Notes for C programing:
 - if files is outside of specified directory preform a deadlock or something like that
 - Set these up to be interactive or real time
 - follow readers and writers problem from 3 - 8.10.... Program read meta data for classification label, check user account permission and then either allow or don't allow
+
+- *** Optimize hardware to prioritiez the scanning of metadata for things like classifications etc...***
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### Guide ###
 Sections are separated by ### ###
