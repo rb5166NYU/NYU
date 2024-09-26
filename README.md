@@ -8,6 +8,16 @@ Notes for C programing:
 - follow readers and writers problem from 3 - 8.10.... Program read meta data for classification label, check user account permission and then either allow or don't allow
 
 - *** Optimize hardware to prioritiez the scanning of metadata for things like classifications etc...***
+For this all data within a fold/directory/drive will be scanned for key terms. This will be intended for large sets of data and speed. The program will consume processors and memory for fast scanning. Regardless of size.
+
+Papers to reference:
+
+https://www.researchgate.net/profile/Yongwei-Wu/publication/265538826_SmartScan_Efficient_Metadata_Crawl_for_Storage_Management_Metadata_Querying_in_Large_File_Systems/links/54d2c0da0cf2501791806b6f/SmartScan-Efficient-Metadata-Crawl-for-Storage-Management-Metadata-Querying-in-Large-File-Systems.pdf
+
+https://asistdl.onlinelibrary.wiley.com/doi/abs/10.1002/asi.21233
+
+https://d1wqtxts1xzle7.cloudfront.net/4249279/Knowledge_Discovery_Enhancing_Data_Mining_and_Decision_Support_Integration-libre.pdf?1390836613=&response-content-disposition=inline%3B+filename%3DKnowledge_Discovery_Enhancing_Data_Minin.pdf&Expires=1727314002&Signature=WTdV3jID5fFcJjjd5GvCSv10khnv8SKzCBNwHldi3u8Knc-fzJsucw~D6l57BAEHRf~vVM85D1-kvGLM5kHztzZ9QM1N02HmB2V1xVcWfjeWTD7c28ErzU-aleEp4Uza3UirBvlmBsAqeJ5bR1IsGF3kl9-sGr3yYyoJY6nrHy-oMLJ07dMMDFE6jdKZr2IOv3IibXS-~oJSl28mzij-2qZV-ew216ji1Qg84fl8ony7AfmIunnAa~lqb33-WAOWhRickH8-XTNgNQT4u5L7CQVW7sF833jmIHRHEreRllxt3uyK7TJNPYnDhteYGE8V6ZSxTLpcRo7qUngWNifOqA__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA - ////Maybe////
+
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### Guide ###
 Sections are separated by ### ###
