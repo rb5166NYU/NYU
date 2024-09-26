@@ -12,10 +12,13 @@ For this all data within a fold/directory/drive will be scanned for key terms. T
 
 Papers to reference:
 
+SmartScan: Efficient Metadata Crawl for Storage Management Metadata Querying in Large File Systems
 https://www.researchgate.net/profile/Yongwei-Wu/publication/265538826_SmartScan_Efficient_Metadata_Crawl_for_Storage_Management_Metadata_Querying_in_Large_File_Systems/links/54d2c0da0cf2501791806b6f/SmartScan-Efficient-Metadata-Crawl-for-Storage-Management-Metadata-Querying-in-Large-File-Systems.pdf
 
+Document categorization in legal electronic discovery: computer classification vs. manual review
 https://asistdl.onlinelibrary.wiley.com/doi/abs/10.1002/asi.21233
 
+Knowledge_Discovery_Enhancing_Data_Mining_and_Decision_Support_Integration-libre.pdf
 https://d1wqtxts1xzle7.cloudfront.net/4249279/Knowledge_Discovery_Enhancing_Data_Mining_and_Decision_Support_Integration-libre.pdf?1390836613=&response-content-disposition=inline%3B+filename%3DKnowledge_Discovery_Enhancing_Data_Minin.pdf&Expires=1727314002&Signature=WTdV3jID5fFcJjjd5GvCSv10khnv8SKzCBNwHldi3u8Knc-fzJsucw~D6l57BAEHRf~vVM85D1-kvGLM5kHztzZ9QM1N02HmB2V1xVcWfjeWTD7c28ErzU-aleEp4Uza3UirBvlmBsAqeJ5bR1IsGF3kl9-sGr3yYyoJY6nrHy-oMLJ07dMMDFE6jdKZr2IOv3IibXS-~oJSl28mzij-2qZV-ew216ji1Qg84fl8ony7AfmIunnAa~lqb33-WAOWhRickH8-XTNgNQT4u5L7CQVW7sF833jmIHRHEreRllxt3uyK7TJNPYnDhteYGE8V6ZSxTLpcRo7qUngWNifOqA__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA - ////Maybe////
 
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
