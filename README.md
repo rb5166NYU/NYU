@@ -64,6 +64,12 @@ Pthread_attr_destroy: Remove a threads attribute structure
 
 Parkinson’s Law: Programs expand to fill the memory available to hold them.
 
+Memory managment algorithms:
+First Fit - The first space a program can fit, will run through memory and allocate the first spot avalible
+Next Fit - The next possible spot a program can fit starting from the most recent spot a program was placed
+Best Fit - Will look for the smallest possible space a program will fit
+Worst Fit - Looks for the space that allows the largest possible space for the program
+Quick Fit - rapid search for a space that a program can fit
 
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### What Each Program in this branch will help with ###
