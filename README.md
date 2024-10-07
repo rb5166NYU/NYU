@@ -89,7 +89,7 @@ Page Replacement Algorithms:
 - Clock algorithm, goes around like a clock and will go around twice before ejecting a page.
 - Least recently used (LRU) algorithm: Remove least recently used
 - Working set algorithm: group pages together (memory referenced should be near eachother)
-- WSClock algorithm:
+- WSClock algorithm: same as above, but follows a clock kind of format. 
 
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### What Each Program in this branch will help with ###
