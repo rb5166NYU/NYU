@@ -80,6 +80,17 @@ Virtual memory:
 - The relation between virtual addresses and physical memory addresses is given by the page table. Every page begins on a multiple of 4096 and ends 4095 addresses higher, so 4K–8K really means 4096–8191 and 8K to 12K means 8192–12287
 
 - For paging, mapping from virtual to physical must be fast. If the virtual address space is large, the page table will be large.
+
+Page Replacement Algorithms:
+- optimal algorithm: Will use and get rid of pages in the most efecent way possible (neeed to see future to do this)
+- Not recently used algorithm: WIll remove pages that are not recently used
+- First-in, first-out (FIFO) algorithm: like a queue, as a page comes in we eject the ones we don't need
+- Second chance algorithm: page has 2 chances to be used.
+- Clock algorithm, goes around like a clock and will go around twice before ejecting a page.
+- Least recently used (LRU) algorithm: Remove least recently used
+- Working set algorithm: group pages together (memory referenced should be near eachother)
+- WSClock algorithm:
+
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### What Each Program in this branch will help with ###
 
