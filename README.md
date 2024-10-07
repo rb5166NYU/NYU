@@ -71,6 +71,15 @@ Best Fit - Will look for the smallest possible space a program will fit
 Worst Fit - Looks for the space that allows the largest possible space for the program
 Quick Fit - rapid search for a space that a program can fit
 
+Virtual memory:
+- There is a need to run programs that are too large to fit in memory.
+- Solution adopted in the 1960s split programs into little pieces called overlays (Kept on the disk,  swapped in and out of memory
+- Virtual memory: each program has its own address space, broken up into chunks called pages
+
+- MMU manages paging, each page file is 4kb
+- The relation between virtual addresses and physical memory addresses is given by the page table. Every page begins on a multiple of 4096 and ends 4095 addresses higher, so 4K–8K really means 4096–8191 and 8K to 12K means 8192–12287
+
+- For paging, mapping from virtual to physical must be fast. If the virtual address space is large, the page table will be large.
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### What Each Program in this branch will help with ###
 
