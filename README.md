@@ -59,6 +59,11 @@ Pthread_join: waits for a specific thread to exit
 Pthread_yield: Release CPU to let another thread run
 Pthread_attr_init: Creates and initilizes a threads attriubute structure
 Pthread_attr_destroy: Remove a threads attribute structure
+.....  .....  .....  .....  ..... .....  .....  .....  .....  .....
+### Memory ###
+
+Parkinson’s Law: Programs expand to fill the memory available to hold them.
+
 
 .....  .....  .....  .....  ..... .....  .....  .....  .....  .....
 ### What Each Program in this branch will help with ###
