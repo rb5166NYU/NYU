@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 
-/* this was a comment */
+/*
 struct PTE {
   int is_valid;
   int frame_number;
@@ -12,6 +12,7 @@ struct PTE {
   int reference_count;
 };
 
+ */
 
 
 
@@ -380,7 +381,7 @@ int count_page_faults_lfu(struct PTE page_table[TABLEMAX],int table_cnt, int ref
 
           
 
-/* this was a comment */
+/* 
 
 int main()
 {
@@ -410,3 +411,4 @@ int main()
 
 }
 
+*/
