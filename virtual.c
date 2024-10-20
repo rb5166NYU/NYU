@@ -1,13 +1,5 @@
 #include "oslabs.h"
 
-struct PTE {
-    int is_valid;
-    int frame_number;
-    int arrival_timestamp;
-    int last_access_timestamp;
-    int reference_count;
-};
-
 int process_page_access_fifo(struct PTE page_table[TABLEMAX], int *table_cnt, int page_number, int frame_pool[POOLMAX], int *frame_cnt, int current_timestamp) {
     // Check if page is already in memory
     if (page_table[page_number].is_valid) {
@@ -38,10 +30,6 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX], int *table_cnt, in
 
     // Replace the oldest page
     page_table[oldest_index].is_valid = 0;
-    page_table[oldest_index].frame_number = -1;
-    page_table[oldest_index].arrival_timestamp = -1;
-    page_table[oldest_index].last_access_timestamp = -1;
-    page_table[oldest_index].reference_count = -1;
 
     // Insert the new page
     int new_frame = page_table[oldest_index].frame_number;
@@ -99,10 +87,6 @@ int process_page_access_lru(struct PTE page_table[TABLEMAX], int *table_cnt, int
 
     // Replace the least recently used page
     page_table[lru_index].is_valid = 0;
-    page_table[lru_index].frame_number = -1;
-    page_table[lru_index].arrival_timestamp = -1;
-    page_table[lru_index].last_access_timestamp = -1;
-    page_table[lru_index].reference_count = -1;
 
     // Insert the new page
     int new_frame = page_table[lru_index].frame_number;
@@ -161,10 +145,6 @@ int process_page_access_lfu(struct PTE page_table[TABLEMAX], int *table_cnt, int
 
     // Replace the least frequently used page
     page_table[lfu_index].is_valid = 0;
-    page_table[lfu_index].frame_number = -1;
-    page_table[lfu_index].arrival_timestamp = -1;
-    page_table[lfu_index].last_access_timestamp = -1;
-    page_table[lfu_index].reference_count = -1;
 
     // Insert the new page
     int new_frame = page_table[lfu_index].frame_number;
