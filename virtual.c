@@ -17,12 +17,13 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX], int *table_cnt, in
         page_table[page_number].arrival_timestamp = current_timestamp;
         page_table[page_number].last_access_timestamp = current_timestamp;
         page_table[page_number].reference_count = 1;
+        (*table_cnt)++;  // Update the table count
         return new_frame;
     }
 
     // Replace a page using FIFO
     int oldest_index = -1;
-    for (int i = 0; i < *table_cnt; i++) {
+    for (int i = 0; i < TABLEMAX; i++) { // Use TABLEMAX instead of *table_cnt
         if (page_table[i].is_valid && (oldest_index == -1 || page_table[i].arrival_timestamp < page_table[oldest_index].arrival_timestamp)) {
             oldest_index = i;
         }
@@ -74,12 +75,13 @@ int process_page_access_lru(struct PTE page_table[TABLEMAX], int *table_cnt, int
         page_table[page_number].arrival_timestamp = current_timestamp;
         page_table[page_number].last_access_timestamp = current_timestamp;
         page_table[page_number].reference_count = 1;
+        (*table_cnt)++;  // Update the table count
         return new_frame;
     }
 
     // Replace a page using LRU
     int lru_index = -1;
-    for (int i = 0; i < *table_cnt; i++) {
+    for (int i = 0; i < TABLEMAX; i++) { // Use TABLEMAX instead of *table_cnt
         if (page_table[i].is_valid && (lru_index == -1 || page_table[i].last_access_timestamp < page_table[lru_index].last_access_timestamp)) {
             lru_index = i;
         }
@@ -131,12 +133,13 @@ int process_page_access_lfu(struct PTE page_table[TABLEMAX], int *table_cnt, int
         page_table[page_number].arrival_timestamp = current_timestamp;
         page_table[page_number].last_access_timestamp = current_timestamp;
         page_table[page_number].reference_count = 1;
+        (*table_cnt)++;  // Update the table count
         return new_frame;
     }
 
     // Replace a page using LFU
     int lfu_index = -1;
-    for (int i = 0; i < *table_cnt; i++) {
+    for (int i = 0; i < TABLEMAX; i++) { // Use TABLEMAX instead of *table_cnt
         if (page_table[i].is_valid && (lfu_index == -1 || page_table[i].reference_count < page_table[lfu_index].reference_count || 
             (page_table[i].reference_count == page_table[lfu_index].reference_count && page_table[i].arrival_timestamp < page_table[lfu_index].arrival_timestamp))) {
             lfu_index = i;
