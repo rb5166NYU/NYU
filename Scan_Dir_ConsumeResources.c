@@ -15,8 +15,34 @@ int contains_confidential(const char *filename, void *memory);
 void set_cpu_affinity(int core_id);
 int get_number_of_logical_processors(void);
 void scan_directory(const char *directory_path, void *memory, int *files_processed, int total_files);
-void construct_path(char *destination, size_t dest_size, const char *directory_path, const char *file_name);
 int count_files_in_directory(const char *directory_path);
+
+// Define a structure for thread parameters
+typedef struct {
+    const char *directory_path; // Path of the directory to scan
+    void *memory;               // Memory buffer for file reading
+    int *files_processed;       // Pointer to track number of processed files
+    int total_files;           // Total number of files to scan
+} ThreadData;
+
+// Thread function to scan a directory
+DWORD WINAPI scan_directory_thread(LPVOID param) {
+    ThreadData *data = (ThreadData *)param;
+
+    // Print a message when the thread starts scanning a subdirectory
+    printf("Thread started for directory: %s\n", data->directory_path);
+
+    // Scan the directory using the provided parameters
+    scan_directory(data->directory_path, data->memory, data->files_processed, data->total_files);
+    
+    // Print a message when the thread finishes scanning
+    printf("Thread finished for directory: %s\n", data->directory_path);
+    
+    // Free the duplicated directory path and the ThreadData structure
+    free((void *)data->directory_path);
+    free(data);
+    return 0;
+}
 
 // Function to check if a file contains the word "confidential"
 int contains_confidential(const char *filename, void *memory) {
@@ -75,8 +101,9 @@ int count_files_in_directory(const char *directory_path) {
 
     // Read each entry in the directory
     while ((entry = readdir(dir)) != NULL) {
+        // Skip the current and parent directory entries
         if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
-            continue; // Skip the current and parent directory entries
+            continue;
         }
 
         char filepath[1024]; // Buffer to hold the full file path
@@ -105,6 +132,8 @@ void scan_directory(const char *directory_path, void *memory, int *files_process
 
     struct dirent *entry; // Structure for directory entries
     struct stat fileStat; // Structure for file status information
+    HANDLE threads[1024]; // Array to hold thread handles for concurrent directory scans
+    int thread_count = 0; // Count of active threads
 
     // Read each entry in the directory
     while ((entry = readdir(dir)) != NULL) {
@@ -126,8 +155,18 @@ void scan_directory(const char *directory_path, void *memory, int *files_process
                 }
                 (*files_processed)++; // Increment processed file count
             } else if (S_ISDIR(fileStat.st_mode)) { // If it's a directory
-                // Recursively scan the subdirectory
-                scan_directory(filepath, memory, files_processed, total_files);
+                // Prepare data for the new thread
+                ThreadData *data = malloc(sizeof(ThreadData));
+                data->directory_path = _strdup(filepath); // Duplicate string for thread use
+                data->memory = memory; // Pass the allocated memory buffer
+                data->files_processed = files_processed; // Pass the pointer to processed files count
+                data->total_files = total_files; // Pass the total file count
+
+                // Print a message when a thread is created
+                printf("Creating thread to scan directory: %s\n", filepath);
+
+                // Create a new thread to scan the subdirectory
+                threads[thread_count++] = CreateThread(NULL, 0, scan_directory_thread, data, 0, NULL);
             }
         }
 
@@ -149,6 +188,9 @@ void scan_directory(const char *directory_path, void *memory, int *files_process
     }
 
     closedir(dir); // Close the directory after reading
+
+    // Wait for all threads to finish
+    WaitForMultipleObjects(thread_count, threads, TRUE, INFINITE);
 }
 
 int main(int argc, char *argv[]) {
@@ -158,7 +200,6 @@ int main(int argc, char *argv[]) {
     // Check if the correct number of arguments is provided
     if (argc == 2) {
         directory_path = argv[1]; // Get the directory path from command-line arguments
-        // Automatically pick a core ID
         core_id = rand() % get_number_of_logical_processors(); // Randomly select a core ID
     } else {
         // Print usage instructions if the arguments are incorrect
@@ -178,7 +219,7 @@ int main(int argc, char *argv[]) {
 
     // Set the CPU affinity to the specified core
     set_cpu_affinity(core_id);
-    printf("CPU core assigned to progam: %d\n", core_id); // Print the core ID
+    printf("CPU core assigned to program: %d\n", core_id); // Print the core ID
 
     // Count total files to process
     int total_files = count_files_in_directory(directory_path);
